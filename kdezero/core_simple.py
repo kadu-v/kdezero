@@ -21,6 +21,15 @@ class Function:
         raise NotImplementedError()
 
 
-class Squre(Function):
+class Square(Function):
     def forward(self, x):
         return x**2
+
+
+# %%
+x = Variable(np.array(10))
+f = Square()
+y = f(x)
+print(y.data)
+
+# %%
