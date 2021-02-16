@@ -1,5 +1,5 @@
 # ==================================================
-# Variable
+# Variable/Function
 # ==================================================
 # %%
 import numpy as np
@@ -8,6 +8,7 @@ import numpy as np
 class Variable:
     def __init__(self, data):
         self.data = data
+        self.grad = None
 
 
 class Function:
@@ -15,15 +16,14 @@ class Function:
         x = input.data
         y = self.forward(x)
         output = Variable(y)
+        self.input = input
         return output
 
     def forward(self, x):
         raise NotImplementedError()
 
-
-class Square(Function):
-    def forward(self, x):
-        return x**2
+    def backward(self, gy):
+        raise NotImplementedError()
 
 
 # %%
