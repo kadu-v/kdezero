@@ -17,6 +17,10 @@ class Square(Function):
         return gx
 
 
+def square(x):
+    return Square()(x)
+
+
 class Exp(Function):
     def forward(self, x):
         return np.exp(x)
@@ -25,5 +29,9 @@ class Exp(Function):
         x = self.input.data
         gx = np.exp(x) * gy
         return gx
+
+
+def exp(x):
+    return Exp()(x)
 
 # %%
