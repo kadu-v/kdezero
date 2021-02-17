@@ -1,5 +1,6 @@
+# %%
 import numpy as np
-from kdezero.core_simple import Function
+from kdezero.core_simple import Function, Variable
 
 # ==================================================================================================
 # Basic Functions: Exp
@@ -24,3 +25,5 @@ class Exp(Function):
         x = self.input.data
         gx = np.exp(x) * gy
         return gx
+
+# %%
