@@ -7,6 +7,13 @@ from kdezero.core_simple import Function, Variable
 # ==================================================================================================
 
 
+class Add(Function):
+    def forward(self, xs):
+        x0, x1 = xs
+        y = x0 + x1
+        return (y, )
+
+
 class Square(Function):
     def forward(self, x):
         return x**2
