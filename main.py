@@ -1,16 +1,15 @@
+# %%
 import kdezero
 from kdezero.core_simple import Variable
-from kdezero.functions import square, exp
+from kdezero.functions import square, exp, Add
 import numpy as np
 
 
-x = Variable(np.array(0.5))
-a = square(x)
-b = exp(a)
-y = square(b)
+x0 = Variable(np.array(0.5))
+x1 = Variable(np.array(0.5))
+y = Add()(x0, x1)
+print(y.data)
 
-y.backward()
-print(x.grad)
 # C = y.creator
 # b = C.input
 # b.grad = C.backward(y.grad)
@@ -24,3 +23,5 @@ print(x.grad)
 # x.grad = A.backward(a.grad)
 
 # print(x.grad)
+
+# %%

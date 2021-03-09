@@ -8,10 +8,13 @@ from kdezero.core_simple import Function, Variable
 
 
 class Add(Function):
-    def forward(self, xs):
-        x0, x1 = xs
+    def forward(self, x0, x1):
         y = x0 + x1
-        return (y, )
+        return y
+
+
+def add(x0, x1):
+    return Add()(x0, x1)
 
 
 class Square(Function):
