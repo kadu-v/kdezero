@@ -5,25 +5,17 @@ from kdezero.functions import square, exp, add
 import numpy as np
 
 
-x = Variable(np.array(2.0))
-y = Variable(np.array(3.0))
-z = add(square(x), square(y))
-z.backward()
-print(z.data)
+x = Variable(np.array(3.0))
+y = add(x, x)
+
+print(y.data)
+
+y.backward()
 print(x.grad)
-print(y.grad)
-# C = y.creator
-# b = C.input
-# b.grad = C.backward(y.grad)
 
-# B = b.creator
-# a = B.input
-# a.grad = B.backward(b.grad)
-
-# A = a.creator
-# x = A.input
-# x.grad = A.backward(a.grad)
-
-# print(x.grad)
+x.cleargrad()
+y = add(x, add(x, x))
+y.backward()
+print(x.grad)
 
 # %%
