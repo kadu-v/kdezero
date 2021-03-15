@@ -5,8 +5,9 @@ from kdezero.functions import square, exp, add
 import numpy as np
 
 
-x = Variable(np.array(3.0))
-y = add(square(x), square(x))
+x = Variable(np.array(2.0))
+a = square(x)
+y = add(square(a), square(a))
 
 print(y.data)
 
