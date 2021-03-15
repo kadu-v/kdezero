@@ -1,6 +1,6 @@
 # %%
 import numpy as np
-from kdezero.core_simple import Function, Variable
+from kdezero.core_simple import Function
 
 # ==================================================================================================
 # Basic Functions: Exp
@@ -12,6 +12,9 @@ class Add(Function):
         y = x0 + x1
         return y
 
+    def backward(self, gy):
+        return gy, gy
+
 
 def add(x0, x1):
     return Add()(x0, x1)
@@ -22,7 +25,7 @@ class Square(Function):
         return x**2
 
     def backward(self, gy):
-        x = self.input.data
+        x = self.inputs[0].data
         gx = 2 * x * gy
         return gx
 
@@ -36,7 +39,7 @@ class Exp(Function):
         return np.exp(x)
 
     def backward(self, gy):
-        x = self.input.data
+        x = self.inputs[0].data
         gx = np.exp(x) * gy
         return gx
 
