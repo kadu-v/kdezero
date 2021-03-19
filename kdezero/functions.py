@@ -1,6 +1,7 @@
 # %%
 import numpy as np
-from kdezero.core_simple import Function, Variable
+import kdezero.core_simple as cs
+from kdezero.core_simple import Function, Variable, as_variable
 
 
 # ==================================================================================================
@@ -10,6 +11,7 @@ from kdezero.core_simple import Function, Variable
 
 class Add(Function):
     def forward(self, x0, x1):
+        x1 = x1
         y = x0 + x1
         return y
 
@@ -18,10 +20,8 @@ class Add(Function):
 
 
 def add(x0, x1):
+    x1 = cs.as_array(x1)
     return Add()(x0, x1)
-
-
-Variable.__add__ = add
 
 
 class Square(Function):
@@ -54,6 +54,7 @@ def exp(x):
 
 class Mul(Function):
     def forward(self, x0, x1):
+        x1 = x1
         y = x0 * x1
         return y
 
@@ -63,9 +64,14 @@ class Mul(Function):
 
 
 def mul(x0, x1):
+    x1 = cs.as_array(x1)
     return Mul()(x0, x1)
 
 
+Variable.__add__ = add
+Variable.__radd__ = add
 Variable.__mul__ = mul
+Variable.__rmul__ = mul
+
 
 # %%

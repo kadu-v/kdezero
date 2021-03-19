@@ -31,6 +31,8 @@ def no_grad():
 
 
 class Variable:
+    __array_prioroty__ = 200
+
     def __init__(self, data, name=None):
         if data is not None:
             if not isinstance(data, np.ndarray):
@@ -110,6 +112,12 @@ class Variable:
         self.grad = None
 
 
+def as_variable(obj):
+    if isinstance(obj, Variable):
+        return obj
+    return Variable(obj)
+
+
 def as_array(x):
     if np.isscalar(x):
         return np.array(x)
@@ -118,6 +126,8 @@ def as_array(x):
 
 class Function:
     def __call__(self, *inputs):
+        inputs = [as_variable(x) for x in inputs]
+
         xs = [x.data for x in inputs]
         ys = self.forward(*xs)
         if not isinstance(ys, tuple):
