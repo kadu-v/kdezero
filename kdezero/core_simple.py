@@ -82,14 +82,14 @@ class Variable:
 
         def add_func(f):
             if f not in seen_set:
-                funappend(f)
+                funcs.append(f)
                 seen_set.add(f)
-                funsort(key=lambda x: x.generation)
+                funcs.sort(key=lambda x: x.generation)
 
         add_func(self.creator)
 
         while funcs:
-            f = funpop()
+            f = funcs.pop()
             gys = [output().grad for output in f.outputs]
             gxs = f.backward(*gys)
             if not isinstance(gxs, tuple):
