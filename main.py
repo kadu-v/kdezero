@@ -1,5 +1,7 @@
 # %%
+from numpy import random
 from kdezero import Variable, using_config, no_grad
+from kdezero.utils import _dot_func, _dot_var, plot_dot_graph
 import numpy as np
 
 
@@ -44,5 +46,26 @@ z.backward()
 print(z)
 print(x.grad)
 print(y.grad)
+
+# %%
+x = Variable(np.random.randn(2))
+y = Variable(np.random.randn(2))
+x.name = 'x'
+print(_dot_var(x))
+print(_dot_var(x, verbose=True))
+
+z = x + y
+txt = _dot_func(z.creator)
+print(txt)
+# %%
+x = Variable(np.array(1.0))
+y = Variable(np.array(2))
+z = goldstein(x, y)
+z.backward()
+x.name = 'x'
+y.name = 'y'
+z.name = 'z'
+
+plot_dot_graph(z, verbose=False, to_file='goldstein.png')
 
 # %%
