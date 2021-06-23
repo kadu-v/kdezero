@@ -1,5 +1,4 @@
 import numpy as np
-import kdezero
 from kdezero import Function
 
 # %%
