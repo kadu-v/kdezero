@@ -249,7 +249,7 @@ class Pow(Function):
         return y
 
     def backward(self, gy):
-        x = self.inputs
+        x, = self.inputs
         c = self.c
         gx = c * x ** (c - 1) * gy
         return gx
@@ -264,7 +264,7 @@ class Exp(Function):
         return np.exp(x)
 
     def backward(self, gy):
-        x = self.inputs
+        x, = self.inputs
         gx = np.exp(x) * gy
         return gx
 
