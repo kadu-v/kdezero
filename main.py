@@ -4,36 +4,22 @@ from kdezero import Variable, Function, using_config, no_grad
 import kdezero.functions as F
 from kdezero.utils import _dot_func, _dot_var, plot_dot_graph
 import numpy as np
+import matplotlib.pyplot as plt
 
-
-def f(x):
-    y = x ** 4 - 2 * x ** 2
-    return y
-
-
-x = Variable(np.array(2.0))
-y = f(x)
+x = Variable(np.linspace(-7, 7, 200))
+y = F.sin(x)
 y.backward(create_graph=True)
-print(x.grad)
+logs = [y.data.flatten()]
 
-
-gx = x.grad
-x.cleargrad()
-gx.backward()
-print(x.grad)
-# %%
-iters = 10
-
-for i in range(iters):
-    print(i, x)
-
-    y = f(x)
-    x.cleargrad()
-    y.backward(create_graph=True)
-
+for i in range(3):
+    logs.append(x.grad.data.flatten())
     gx = x.grad
     x.cleargrad()
-    gx.backward()
-    gx2 = x.grad
+    gx.backward(create_graph=True)
 
-    x.data -= gx.data / gx2.data
+labels = ["y=sin(x)", "y'", "y''", "y'''"]
+for i, v in enumerate(logs):
+    plt.plot(x.data, logs[i], label=labels[i])
+
+plt.legend(loc="lower right")
+plt.show()
