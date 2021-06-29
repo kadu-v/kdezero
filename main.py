@@ -6,8 +6,11 @@ from kdezero.utils import _dot_func, _dot_var, plot_dot_graph
 import numpy as np
 import matplotlib.pyplot as plt
 
-x = Variable(np.array([1, 2, 3, 4, 5, 6]))
-y = F.sum(x)
+
+x = Variable(np.random.randn(2, 3))
+W = Variable(np.random.randn(3, 4))
+y = F.matmul(x, W)
 y.backward()
-print(y)
-print(x.grad)
+
+print(x.grad.shape)
+print(W.grad.shape)
