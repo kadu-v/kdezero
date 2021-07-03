@@ -19,6 +19,9 @@ else:
     from kdezero.core import as_array
     from kdezero.core import as_variable
     from kdezero.core import setup_varibale
+    from kdezero.core import Config
+    from kdezero.layers import Layer
+    from kdezero.models import Model
 
 
 setup_varibale()
