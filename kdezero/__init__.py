@@ -13,6 +13,7 @@ if is_simple_core:
     from kdezero.core_simple import setup_varibale
 else:
     from kdezero.core import Variable
+    from kdezero.core import Parameter
     from kdezero.core import Function
     from kdezero.core import using_config
     from kdezero.core import no_grad

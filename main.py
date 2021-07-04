@@ -5,6 +5,7 @@ import kdezero.functions as F
 import kdezero.layers as L
 from kdezero.utils import _dot_func, _dot_var, plot_dot_graph
 from kdezero.models import Model, MLP
+from kdezero import optimizers
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -19,6 +20,8 @@ hidden_size = 10
 
 
 model = MLP((hidden_size, 1))
+optimizer = optimizers.SGD(lr)
+optimizer.setup(model)
 
 
 for i in range(iters):
@@ -28,8 +31,7 @@ for i in range(iters):
     model.cleargrads()
     loss.backward()
 
-    for p in model.params():
-        p.data -= lr * p.grad.data
+    optimizer.update()
 
     if i % 1000 == 0:
         print(loss)
