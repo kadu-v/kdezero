@@ -299,20 +299,6 @@ def pow(x, c):
     return Pow(c)(x)
 
 
-class Exp(Function):
-    def forward(self, x):
-        return np.exp(x)
-
-    def backward(self, gy):
-        x, = self.inputs
-        gx = np.exp(x) * gy
-        return gx
-
-
-def exp(x):
-    return Exp()(x)
-
-
 def setup_varibale():
     Variable.__add__ = add
     Variable.__radd__ = add
@@ -324,3 +310,4 @@ def setup_varibale():
     Variable.__truediv__ = div
     Variable.__rtruediv__ = rdiv
     Variable.__pow__ = pow
+    Variable.__getitem__ = kdezero.functions.get_item
