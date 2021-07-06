@@ -23,6 +23,7 @@ else:
     from kdezero.core import Config
     from kdezero.layers import Layer
     from kdezero.models import Model
+    from kdezero.datasets import Dataset
 
 
 setup_varibale()

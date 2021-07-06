@@ -309,7 +309,7 @@ class Softmax(Function):
         return gx
 
 
-def softmax(x, axis):
+def softmax(x, axis=1):
     return Softmax(axis)(x)
 
 
@@ -351,7 +351,7 @@ class SoftmaxCrossEntropy(Function):
         N, CLS_NUM = x.shape
         gy *= 1 / N
         y = softmax(x)
-        t_onehot = np.eye(CLS_NUM, dtype=t.dtype)[t.dtype]
+        t_onehot = np.eye(CLS_NUM, dtype=t.dtype)[t.data]
         y = (y - t_onehot) * gy
         return y
 
