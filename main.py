@@ -15,27 +15,7 @@ import math
 
 
 np.random.seed(0)
-x, t = kdezero.datasets.get_spiral(train=True)
-print(x.shape)
-print(t.shape)
-print(x[10], t[10])
-print(x[110], t[110])
-
-# %%
-# スパイラルデータセットの可視化
-# index_zero = np.where(t == 0)
-# data_zero = x[index_zero]
-
-# index_one = np.where(t == 1)
-# data_one = x[index_one]
-
-# index_two = np.where(t == 2)
-# data_two = x[index_two]
-
-# plt.scatter(data_zero[:, 0], data_zero[:, 1], marker='o', color='y')
-# plt.scatter(data_one[:, 0], data_one[:, 1], marker='+', color='b')
-# plt.scatter(data_two[:, 0], data_two[:, 1], marker='*', color='g')
-# plt.show()
+train_set = kdezero.datasets.Spiral()
 # %%
 # ハイパラメータの設定
 max_epoch = 300
@@ -47,7 +27,7 @@ lr = 1.0
 model = MLP((hidden_size, 3))
 optimizer = optimizers.SGD(lr).setup(model)
 
-data_size = len(x)
+data_size = len(train_set)
 max_iter = math.ceil(data_size / batch_size)
 history = []
 
@@ -57,8 +37,9 @@ for epoch in range(max_epoch):
 
     for i in range(max_iter):
         batch_index = index[i * batch_size: (i + 1) * batch_size]
-        batch_x = x[batch_index]
-        batch_t = t[batch_index]
+        batch = [train_set[i] for i in batch_index]
+        batch_x = np.array([example[0] for example in batch])
+        batch_t = np.array([example[1] for example in batch])
 
         y = model(batch_x)
         loss = F.softmax_cross_entropy(y, batch_t)
@@ -70,7 +51,7 @@ for epoch in range(max_epoch):
 
     avg_loss = sum_loss / data_size
     history.append(avg_loss)
-    print('epoch %d, loss %.2f' % (epoch + 1, avg_loss))
+    print('epoch %d, loss %.5f' % (epoch + 1, avg_loss))
 
 # %%
 plt.plot(np.array(range(max_epoch)), history)
@@ -78,6 +59,13 @@ plt.show()
 
 # %%
 # 予測結果の可視化
+x, t = kdezero.datasets.get_spiral(train=True)
+print(x.shape)
+print(t.shape)
+print(x[10], t[10])
+print(x[110], t[110])
+
+
 h = 0.001
 x_min, x_max = x[:, 0].min() - .1, x[:, 0].max() + .1
 y_min, y_max = x[:, 1].min() - .1, x[:, 1].max() + .1
