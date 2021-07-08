@@ -1,4 +1,4 @@
-from kdezero.core import as_variable
+from kdezero.core import Variable, as_array, as_variable
 from kdezero import utils
 import numpy as np
 from kdezero import Function
@@ -314,7 +314,7 @@ def softmax(x, axis=1):
 
 
 # =================================================================================================
-# MeanSquaredError
+# loss function: MeanSquaredError
 # =================================================================================================
 
 
@@ -358,3 +358,15 @@ class SoftmaxCrossEntropy(Function):
 
 def softmax_cross_entropy(x, t):
     return SoftmaxCrossEntropy()(x, t)
+
+# =================================================================================================
+# accuracy
+# =================================================================================================
+
+
+def accuracy(y, t):
+    y, t = as_variable(y), as_variable(t)
+    pred = y.data.argmax(axis=1).reshape(t.shape)
+    result = (pred == t.data)
+    acc = result.mean()
+    return Variable(as_array(acc))

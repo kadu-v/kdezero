@@ -24,6 +24,7 @@ else:
     from kdezero.layers import Layer
     from kdezero.models import Model
     from kdezero.datasets import Dataset
+    from kdezero.dataloders import DataLoader
 
 
 setup_varibale()

@@ -1,4 +1,5 @@
 # %%
+from kdezero.dataloders import DataLoader
 from matplotlib import colors
 from numpy import random
 from numpy.core.fromnumeric import argmax
@@ -15,13 +16,21 @@ import math
 
 
 np.random.seed(0)
-train_set = kdezero.datasets.Spiral()
-# %%
+
 # ハイパラメータの設定
 max_epoch = 300
 batch_size = 30
 hidden_size = 10
 lr = 1.0
+
+
+train_set = kdezero.datasets.Spiral(train=True)
+test_set = kdezero.datasets.Spiral(train=False)
+
+train_loader = DataLoader(train_set, batch_size)
+test_loader = DataLoader(test_set, batch_size, shuffle=False)
+# %%
+
 
 # モデルの作成
 model = MLP((hidden_size, 3))
@@ -29,32 +38,60 @@ optimizer = optimizers.SGD(lr).setup(model)
 
 data_size = len(train_set)
 max_iter = math.ceil(data_size / batch_size)
-history = []
+train_loss_history = []
+train_acc_history = []
+test_loss_history = []
+test_acc_history = []
 
 for epoch in range(max_epoch):
     index = np.random.permutation(data_size)
     sum_loss = 0
+    sum_acc = 0
 
-    for i in range(max_iter):
-        batch_index = index[i * batch_size: (i + 1) * batch_size]
-        batch = [train_set[i] for i in batch_index]
-        batch_x = np.array([example[0] for example in batch])
-        batch_t = np.array([example[1] for example in batch])
+    for x, t in train_loader:
 
-        y = model(batch_x)
-        loss = F.softmax_cross_entropy(y, batch_t)
+        y = model(x)
+        loss = F.softmax_cross_entropy(y, t)
+        acc = F.accuracy(y, t)
         model.cleargrads()
         loss.backward()
         optimizer.update()
 
-        sum_loss += float(loss.data) * len(batch_t)
+        sum_loss += float(loss.data) * len(t)
+        sum_acc += float(acc.data) * len(t)
 
-    avg_loss = sum_loss / data_size
-    history.append(avg_loss)
-    print('epoch %d, loss %.5f' % (epoch + 1, avg_loss))
+    avg_loss = sum_loss / len(train_set)
+    avg_acc = sum_acc / len(train_set)
+    train_loss_history.append(avg_loss)
+    train_acc_history.append(avg_acc)
+    print('epoch {}'.format(epoch + 1))
+    print('train loss: {:.4f}, acc: {:.4f}'.format(
+        avg_loss, avg_acc))
+
+    sum_loss, sum_acc = 0, 0
+    with kdezero.no_grad():
+        for x, t in test_loader:
+            y = model(x)
+            loss = F.softmax_cross_entropy(y, t)
+            acc = F.accuracy(y, t)
+            sum_loss += float(loss.data) * len(t)
+            sum_acc += float(acc.data) * len(t)
+
+        avg_loss = sum_loss / len(test_set)
+        avg_acc = sum_acc / len(test_set)
+        test_loss_history.append(avg_loss)
+        test_acc_history.append(avg_acc)
+        print('test loss: {:.4f}, acc: {:.4f}'.format(
+            avg_loss, avg_acc))
 
 # %%
-plt.plot(np.array(range(max_epoch)), history)
+plt.plot(np.array(range(max_epoch)), train_loss_history)
+plt.plot(np.array(range(max_epoch)), test_loss_history, color='r')
+plt.show()
+
+# %%
+plt.plot(np.array(range(max_epoch)), train_acc_history)
+plt.plot(np.array(range(max_epoch)), test_acc_history, color='r')
 plt.show()
 
 # %%
