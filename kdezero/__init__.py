@@ -25,6 +25,7 @@ else:
     from kdezero.models import Model
     from kdezero.datasets import Dataset
     from kdezero.dataloders import DataLoader
+    import kdezero.transforms
 
 
 setup_varibale()
