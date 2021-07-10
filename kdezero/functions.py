@@ -277,7 +277,7 @@ def sigmoid(x):
 
 class ReLu(Function):
     def forward(self, x):
-        y = np.maxmum(x, 0.0)
+        y = np.maximum(x, 0.0)
         return y
 
     def backward(self, gy):
