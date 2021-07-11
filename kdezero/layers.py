@@ -41,6 +41,14 @@ class Layer:
         for param in self.params():
             param.cleargrad()
 
+    def to_cpu(self):
+        for param in self.params():
+            param.to_cpu()
+
+    def to_gpu(self):
+        for param in self.param():
+            param.to_gpu()
+
 
 # =================================================================================================
 # Linear /

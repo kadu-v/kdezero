@@ -25,6 +25,14 @@ else:
     from kdezero.models import Model
     from kdezero.datasets import Dataset
     from kdezero.dataloders import DataLoader
+
+    import kdezero.transforms
+    import kdezero.dataloders
+    import kdezero.optimizers
+    import kdezero.functions
+    import kdezero.layers
+    import kdezero.utils
+    import kdezero.cuda
     import kdezero.transforms
 
 

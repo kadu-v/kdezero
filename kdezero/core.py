@@ -26,9 +26,15 @@ def using_config(name, value):
 def no_grad():
     return using_config('enable_backprop', False)
 
+
 # =================================================================================================
 # Variable/Function
 # =================================================================================================
+try:
+    import cupy
+    array_types = (np.ndarray, cupy.ndarray)
+except ImportError:
+    array_types = (np.ndarray)
 
 
 class Variable:
@@ -36,7 +42,7 @@ class Variable:
 
     def __init__(self, data, name=None):
         if data is not None:
-            if not isinstance(data, np.ndarray):
+            if not isinstance(data, array_types):
                 raise TypeError('{} is not supported'.format(type(data)))
 
         self.data = data
@@ -76,7 +82,8 @@ class Variable:
 
     def backward(self, retain_grad=False, create_graph=False):
         if self.grad is None:
-            self.grad = Variable(np.ones_like(self.data))
+            xp = kdezero.cuda.get_array_module(self.data)
+            self.grad = Variable(xp.ones_like(self.data))
 
         funcs = []
         seen_set = set()  # 重複して同じ関数が現れるのを防ぐ
@@ -127,6 +134,14 @@ class Variable:
 
     def sum(self, axis=None, keepdims=False):
         return kdezero.functions.sum(self, axis, keepdims)
+
+    def to_cpu(self):
+        if self.data is not None:
+            self.data = kdezero.cuda.as_numpy(self.data)
+
+    def to_gpu(self):
+        if self.data is not None:
+            self.data = kdezero.cuda.as_cupy(self.data)
 
 
 class Parameter(Variable):
