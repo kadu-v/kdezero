@@ -48,6 +48,10 @@ test_loader = DataLoader(test_set, batch_size)
 model = MLP((hidden_size, hidden_size, 10), activation=F.relu)
 optimizer = optimizers.SGD().setup(model)
 
+if kdezero.cuda.gpu_enable:
+    train_loader.to_gpu()
+    model.to_gpu()
+
 train_loss_history = []
 train_acc_history = []
 test_loss_history = []
