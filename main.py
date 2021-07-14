@@ -14,6 +14,7 @@ from kdezero import optimizers
 import numpy as np
 import matplotlib.pyplot as plt
 import math
+import os
 # %%
 
 train_set = kdezero.datasets.MNIST(train=True, transforms=None)
@@ -48,9 +49,13 @@ test_loader = DataLoader(test_set, batch_size)
 model = MLP((hidden_size, hidden_size, 10), activation=F.relu)
 optimizer = optimizers.SGD().setup(model)
 
+if os.path.exists('my_mlp.npz'):
+    model.load_weights('my_mlp.npz')
+
 if kdezero.cuda.gpu_enable:
     train_loader.to_gpu()
     model.to_gpu()
+
 
 train_loss_history = []
 train_acc_history = []
@@ -88,6 +93,8 @@ for epoch in range(max_epoch):
     test_acc_history.append(sum_acc / len(test_set))
     print('test loss: {:.4f}, acc: {:.4f}'.format(
         sum_loss / len(test_set), sum_acc / len(test_set)))
+
+model.save_weights('my_mlp.npz')
 
 # %%
 # 結果の可視化

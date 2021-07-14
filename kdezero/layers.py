@@ -1,4 +1,5 @@
 import weakref
+import os
 import numpy as np
 import kdezero.functions as F
 from kdezero import cuda
@@ -51,6 +52,37 @@ class Layer:
         for param in self.param():
             param.to_gpu()
 
+    def _flatten_params(self, params_dict, parent_key=""):
+        for name in self._params:
+            obj = self.__dict__[name]
+            key = parent_key + '/' + name if parent_key else name
+
+            if isinstance(obj, Layer):
+                obj._flatten_params(params_dict, key)
+            else:
+                params_dict[key] = obj
+
+    def save_weights(self, path):
+        self.to_cpu()
+
+        params_dict = {}
+        self._flatten_params(params_dict)
+        array_dict = {key: param.data for key,
+                      param in params_dict.items() if param is not None}
+
+        try:
+            np.savez_compressed(path, **array_dict)
+        except (Exception, KeyboardInterrupt) as e:
+            if os.path.exists(path):
+                os.remove(path)
+            raise
+
+    def load_weights(self, path):
+        npz = np.load(path)
+        params_dict = {}
+        self._flatten_params(params_dict)
+        for key, param in params_dict.items():
+            param.data = npz[key]
 
 # =================================================================================================
 # Linear /
