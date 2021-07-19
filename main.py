@@ -1,4 +1,5 @@
 # %%
+from kdezero.cuda import get_array_module
 from kdezero import transforms
 from kdezero.dataloders import DataLoader
 from matplotlib import colors
@@ -105,3 +106,19 @@ plt.show()
 plt.plot(np.arange(max_epoch), train_acc_history)
 plt.plot(np.arange(max_epoch), test_acc_history)
 plt.show()
+
+
+# %%
+def get_conv_outsuze(input_size, kernel_size, stride, pad):
+    return (input_size + pad * 2 - kernel_size) // stride + 1
+
+
+H, W = 4, 4
+KH, KW = 3, 3
+SH, SW = 1, 1
+PH, PW = 1, 1
+OH = get_conv_outsuze(H, KH, SH, PH)
+OW = get_conv_outsuze(W, KW, SW, PW)
+print(OH, OW)
+
+# %%
