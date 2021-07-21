@@ -18,14 +18,7 @@ import math
 import os
 # %%
 
-train_set = kdezero.datasets.MNIST(train=True, transforms=None)
-test_set = kdezero.datasets.MNIST(train=True, transforms=None)
 
-print(len(train_set))
-print(len(test_set))
-
-
-# %%
 def get_conv_outsuze(input_size, kernel_size, stride, pad):
     return (input_size + pad * 2 - kernel_size) // stride + 1
 
