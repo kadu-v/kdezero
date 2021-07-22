@@ -16,19 +16,34 @@ import numpy as np
 import matplotlib.pyplot as plt
 import math
 import os
+
+
 # %%
+max_epoch = 3
+batch_size = 100
 
+train_set = kdezero.datasets.MNIST(train=True)
+train_loader = DataLoader(train_set, batch_size)
+model = MLP((1000, 10))
+optimizer = optimizers.SGD().setup(model)
 
-def get_conv_outsuze(input_size, kernel_size, stride, pad):
-    return (input_size + pad * 2 - kernel_size) // stride + 1
+if os.path.exists('my_mlp.npz'):
+    model.load_weights('my_mlp.npz')
 
+for epoch in range(max_epoch):
+    sum_loss = 0
 
-H, W = 4, 4
-KH, KW = 3, 3
-SH, SW = 1, 1
-PH, PW = 1, 1
-OH = get_conv_outsuze(H, KH, SH, PH)
-OW = get_conv_outsuze(W, KW, SW, PW)
-print(OH, OW)
+    for x, t in train_loader:
+        y = model(x)
+        loss = F.softmax_cross_entropy(y, t)
+        model.cleargrads()
+        loss.backward()
+        optimizer.update()
+        sum_loss += float(loss.data) * len(t)
+
+    print('epoch: {}, loss: {:.4f}'.format(
+        epoch + 1, sum_loss / len(train_set)))
+
+model.save_weights('my_mlp.npz')
 
 # %%

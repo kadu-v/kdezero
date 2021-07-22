@@ -1,9 +1,21 @@
 import numpy as np
-from kdezero import utils, cuda
 import kdezero
+from kdezero import utils, cuda
 from kdezero.core import Function, Variable, as_array, as_variable
+from kdezero.core import add
+from kdezero.core import sub
+from kdezero.core import rsub
+from kdezero.core import mul
+from kdezero.core import div
+from kdezero.core import neg
+from kdezero.core import pow
+from kdezero.functions_conv import pooling
+from kdezero.functions_conv import average_pooling
+from kdezero.functions_conv import col2im
+from kdezero.functions_conv import im2col
+from kdezero.functions_conv import deconv2d
+from kdezero.functions_conv import conv2d
 
-# %%
 # =================================================================================================
 # Sin / Cos / Tanh / Exp
 # =================================================================================================
@@ -428,3 +440,8 @@ def dropout(x, dropout_ratio=0.6):
         return y
     else:
         return x
+
+
+# =================================================================================================
+# others
+# =================================================================================================
