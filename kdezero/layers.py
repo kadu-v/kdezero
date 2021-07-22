@@ -153,8 +153,8 @@ class Conv2d(Layer):
             xp = cuda.get_array_module(x)
             self._init_W(xp)
 
-            y = F.conv2d(x, self.W, self.b, self.stride, self.pad)
-            return y
+        y = F.conv2d(x, self.W, self.b, self.stride, self.pad)
+        return y
 
 
 class Deconv2d(Layer):
@@ -189,5 +189,5 @@ class Deconv2d(Layer):
             xp = cuda.get_array_module(x)
             self._init_W(xp)
 
-            y = F.deconv2d(x. self.W, self.b, self.stride, self.pad)
-            return y
+        y = F.deconv2d(x. self.W, self.b, self.stride, self.pad)
+        return y

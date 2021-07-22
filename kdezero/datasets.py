@@ -12,10 +12,13 @@ class Dataset:
         self.train = train
         self.transform = transform
         self.target_transform = target_transform
+
+        def f(x):
+            return x
         if self.transform is None:
-            self.transform = lambda x: x
+            self.transform = f
         if self.target_transform is None:
-            self.target_transform = lambda x: x
+            self.target_transform = f
 
         self.data = None
         self.label = None
@@ -26,6 +29,7 @@ class Dataset:
         if self.label is None:
             return self.transform(self.data[index]), None
         else:
+            x = self.transform(self.data[index])
             return self.transform(self.data[index]), self.target_transform(self.label[index])
 
     def __len__(self):
@@ -75,8 +79,8 @@ class Spiral(Dataset):
 # =================================================================================================
 
 class MNIST(Dataset):
-    def __init__(self, train=True, transforms=Compose([Flatten(), ToFloat(), Normalize(0., 255.)]), target_transform=None):
-        super().__init__(train, transforms, target_transform)
+    def __init__(self, train=True, transform=Compose([Flatten(), ToFloat(), Normalize(0., 255.)]), target_transform=None):
+        super().__init__(train, transform, target_transform)
 
     def prepare(self):
         url = 'http://yann.lecun.com/exdb/mnist/'
