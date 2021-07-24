@@ -2,6 +2,7 @@ from kdezero import Layer
 from kdezero import utils
 import kdezero.functions as F
 import kdezero.layers as L
+import numpy as np
 
 # =============================================================================
 # Model / Sequential / MLP
