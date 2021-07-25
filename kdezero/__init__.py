@@ -24,10 +24,11 @@ else:
     from kdezero.layers import Layer
     from kdezero.models import Model
     from kdezero.datasets import Dataset
-    from kdezero.dataloders import DataLoader
+    from kdezero.dataloaders import DataLoader
+    from kdezero.dataloaders import SeqDataLoader
 
     import kdezero.datasets
-    import kdezero.dataloders
+    import kdezero.dataloaders
     import kdezero.optimizers
     import kdezero.functions
     import kdezero.functions_conv
