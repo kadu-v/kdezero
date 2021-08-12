@@ -278,8 +278,8 @@ class Mul(Function):
         gx0 = gy * x1
         gx1 = gy * x0
         if x0.shape != x1.shape:
-            gx0 = kdezero.functions.sum_to(gx0, self.x0_shape)
-            gx1 = kdezero.functions.sum_to(gx1, self.x1_shape)
+            gx0 = kdezero.functions.sum_to(gx0, x0.shape)
+            gx1 = kdezero.functions.sum_to(gx1, x1.shape)
         return gx0, gx1
 
 
@@ -298,8 +298,8 @@ class Div(Function):
         gx0 = gy / x1
         gx1 = gy * (-x0 / x1 ** 2)
         if x0.shape != x1.shape:
-            gx0 = kdezero.functions.sum_to(gx0, self.x0_shape)
-            gx1 = kdezero.functions.sum_to(gx1, self.x1_shape)
+            gx0 = kdezero.functions.sum_to(gx0, x0.shape)
+            gx1 = kdezero.functions.sum_to(gx1, x1.shape)
         return gx0, gx1
 
 
